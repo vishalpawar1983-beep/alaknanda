@@ -1,0 +1,305 @@
+@import "tailwindcss";
+
+/* ==========================================================================
+   Alaknanda Ship Management — Design tokens
+   Tailwind v4 CSS-first theme. Every value here is exposed as a utility,
+   e.g. --color-navy-900 => bg-navy-900 / text-navy-900 / border-navy-900.
+   ========================================================================== */
+
+@theme {
+  /* Brand ------------------------------------------------------------- */
+  --color-navy-50: #eef3f9;
+  --color-navy-100: #d6e2ef;
+  --color-navy-200: #adc3da;
+  --color-navy-300: #7f9dc1;
+  --color-navy-400: #4d72a1;
+  --color-navy-500: #1f4d80;
+  --color-navy-600: #0f4c81; /* Ocean Blue — secondary */
+  --color-navy-700: #0d3a63;
+  --color-navy-800: #0a2c4b;
+  --color-navy-900: #0a2342; /* Dark Navy — primary */
+  --color-navy-950: #061729;
+
+  --color-accent-50: #fff4ec;
+  --color-accent-100: #ffe4d1;
+  --color-accent-200: #ffc5a3;
+  --color-accent-300: #ff9f6b;
+  --color-accent-400: #ff8438;
+  --color-accent-500: #ff6b00; /* Orange — accent */
+  --color-accent-600: #e05c00;
+  --color-accent-700: #b84a00;
+  --color-accent-800: #8f3a00;
+  --color-accent-900: #6b2b00;
+
+  --color-seafoam-500: #00a86b; /* Success */
+  --color-seafoam-600: #008d5a;
+  --color-seafoam-50: #e6f7f0;
+
+  /* Neutrals ---------------------------------------------------------- */
+  --color-mist-50: #fafbfd;
+  --color-mist-100: #f5f7fa; /* Light Gray */
+  --color-mist-200: #eaeef4;
+  --color-mist-300: #dbe2ec;
+  --color-mist-400: #b6c0cf;
+  --color-ink-500: #667085;
+  --color-ink-700: #3a4456;
+  --color-ink-900: #1d2939; /* Dark Text */
+
+  /* Typography -------------------------------------------------------- */
+  --font-sans: var(--font-jost), ui-sans-serif, system-ui, -apple-system,
+    "Segoe UI", sans-serif;
+
+  --text-display: 4.25rem;
+  --text-display--line-height: 1.04;
+  --text-display--letter-spacing: -0.03em;
+  --text-display--font-weight: 700;
+
+  /* Elevation --------------------------------------------------------- */
+  --shadow-card: 0 1px 2px rgb(10 35 66 / 0.04), 0 8px 24px -8px rgb(10 35 66 / 0.1);
+  --shadow-card-hover: 0 2px 4px rgb(10 35 66 / 0.05),
+    0 24px 48px -16px rgb(10 35 66 / 0.22);
+  --shadow-float: 0 18px 40px -12px rgb(10 35 66 / 0.28);
+
+  /* Motion ------------------------------------------------------------ */
+  --ease-out-quint: cubic-bezier(0.22, 1, 0.36, 1);
+
+  --animate-marquee: marquee 42s linear infinite;
+  --animate-drift: drift 9s var(--ease-out-quint) infinite;
+  --animate-swell: swell 7s ease-in-out infinite;
+  --animate-sheen: sheen 2.6s var(--ease-out-quint) infinite;
+}
+
+@keyframes marquee {
+  from {
+    transform: translate3d(0, 0, 0);
+  }
+  to {
+    transform: translate3d(-50%, 0, 0);
+  }
+}
+
+/* Gentle vertical bob used by the hero vessel + anchor motifs. */
+@keyframes drift {
+  0%,
+  100% {
+    transform: translate3d(0, 0, 0) rotate(0deg);
+  }
+  50% {
+    transform: translate3d(0, -14px, 0) rotate(-0.6deg);
+  }
+}
+
+@keyframes swell {
+  0%,
+  100% {
+    transform: translate3d(-2%, 0, 0) scaleY(1);
+  }
+  50% {
+    transform: translate3d(2%, 0, 0) scaleY(1.06);
+  }
+}
+
+@keyframes sheen {
+  0% {
+    transform: translate3d(-120%, 0, 0) skewX(-18deg);
+  }
+  60%,
+  100% {
+    transform: translate3d(320%, 0, 0) skewX(-18deg);
+  }
+}
+
+/* ==========================================================================
+   Base
+   ========================================================================== */
+
+@layer base {
+  html {
+    scroll-behavior: smooth;
+    /* Next 16 no longer overrides scroll-behavior during SPA navigation
+       unless this attribute is present — see app/layout.tsx. */
+    -webkit-tap-highlight-color: transparent;
+  }
+
+  body {
+    background-color: var(--color-white);
+    color: var(--color-ink-900);
+    font-family: var(--font-sans);
+    font-weight: 400;
+    text-rendering: optimizeLegibility;
+  }
+
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6 {
+    color: var(--color-navy-900);
+    font-weight: 600;
+    letter-spacing: -0.02em;
+    text-wrap: balance;
+  }
+
+  p {
+    text-wrap: pretty;
+  }
+
+  /* Visible, on-brand focus ring for keyboard users (WCAG 2.4.7). */
+  :focus-visible {
+    outline: 2px solid var(--color-accent-500);
+    outline-offset: 3px;
+    border-radius: 4px;
+  }
+
+  ::selection {
+    background-color: var(--color-navy-900);
+    color: var(--color-white);
+  }
+}
+
+/* ==========================================================================
+   Utilities
+   ========================================================================== */
+
+/* Section shell: consistent horizontal rhythm from 360px up to 1440px+. */
+@utility container-page {
+  width: 100%;
+  margin-inline: auto;
+  max-width: 80rem;
+  padding-inline: 1.25rem;
+
+  @media (width >= 40rem) {
+    padding-inline: 2rem;
+  }
+
+  @media (width >= 64rem) {
+    padding-inline: 2.5rem;
+  }
+}
+
+/* Frosted panel used for hero stats and floating cards. */
+@utility glass-panel {
+  background-color: rgb(255 255 255 / 0.08);
+  border: 1px solid rgb(255 255 255 / 0.16);
+  backdrop-filter: blur(16px) saturate(140%);
+  -webkit-backdrop-filter: blur(16px) saturate(140%);
+}
+
+/* Small uppercase kicker above section headings. */
+@utility eyebrow {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 0.75rem;
+  font-weight: 600;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+}
+
+/* Long-form article typography for blog + legal pages. */
+@utility prose-marine {
+  color: var(--color-ink-700);
+  font-size: 1.0625rem;
+  line-height: 1.75;
+
+  & > * + * {
+    margin-block-start: 1.25em;
+  }
+
+  & h2 {
+    margin-block-start: 2.25em;
+    font-size: 1.75rem;
+    line-height: 1.25;
+    font-weight: 600;
+  }
+
+  & h3 {
+    margin-block-start: 1.75em;
+    font-size: 1.3125rem;
+    line-height: 1.35;
+    font-weight: 600;
+  }
+
+  & ul,
+  & ol {
+    padding-inline-start: 1.35rem;
+    display: grid;
+    gap: 0.5rem;
+  }
+
+  & ul {
+    list-style: disc;
+  }
+
+  & ol {
+    list-style: decimal;
+  }
+
+  & li::marker {
+    color: var(--color-accent-500);
+  }
+
+  & a {
+    color: var(--color-navy-600);
+    font-weight: 500;
+    text-decoration: underline;
+    text-underline-offset: 3px;
+    text-decoration-thickness: 1px;
+  }
+
+  & a:hover {
+    color: var(--color-accent-600);
+  }
+
+  & strong {
+    color: var(--color-navy-900);
+    font-weight: 600;
+  }
+
+  & blockquote {
+    border-inline-start: 3px solid var(--color-accent-500);
+    padding-inline-start: 1.25rem;
+    font-size: 1.1875rem;
+    color: var(--color-navy-800);
+    font-style: normal;
+  }
+
+  & table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 0.9375rem;
+  }
+
+  & th,
+  & td {
+    border: 1px solid var(--color-mist-300);
+    padding: 0.625rem 0.875rem;
+    text-align: start;
+  }
+
+  & th {
+    background-color: var(--color-mist-100);
+    color: var(--color-navy-900);
+    font-weight: 600;
+  }
+}
+
+/* ==========================================================================
+   Accessibility — honour reduced-motion for every decorative animation
+   ========================================================================== */
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
