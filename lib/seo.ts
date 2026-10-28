@@ -96,9 +96,9 @@ export function organizationSchema() {
     url: siteConfig.url,
     logo: {
       "@type": "ImageObject",
-      url: absoluteUrl("/icon.svg"),
-      width: 512,
-      height: 512,
+      url: absoluteUrl("/Alaknanda-logo-small.png"),
+      width: 517,
+      height: 329,
     },
     image: absoluteUrl("/opengraph-image"),
     description: siteConfig.description,
@@ -303,7 +303,12 @@ export function blogPostingSchema({
     publisher: {
       "@type": "Organization",
       name: siteConfig.legalName,
-      logo: { "@type": "ImageObject", url: absoluteUrl("/icon.svg") },
+      logo: {
+        "@type": "ImageObject",
+        url: absoluteUrl("/Alaknanda-logo-small.png"),
+        width: 517,
+        height: 329,
+      },
     },
   };
 }
